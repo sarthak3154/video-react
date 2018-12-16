@@ -1,15 +1,18 @@
 import React from 'react';
 import SearchBar from './SearchBar';
+import youtube from '../apis/youtube';
 
 class App extends React.Component {
 
-    sleep = (ms) => {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    };
+    state = {videos: []}
 
     onSearchSubmit = async (term) => {
-        //TODO remove sleep fn and fetch videos from the youtube api
-        await this.sleep(2000);
+        const response = await youtube.get('/search', {
+            params: {
+                q: term
+            }
+        });
+        this.setState({videos: response.data.items})
         return true;
     };
 
